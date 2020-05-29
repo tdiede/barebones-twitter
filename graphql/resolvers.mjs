@@ -18,7 +18,7 @@ const resolvers = {
       if (context.isUnauthenticated()) {
         throw new Error(`User must be logged in to tweet!`);
       }
-      //authenticate user, ensure is user_id on tweet
+      //authorize user, ensure is user_id on tweet
       if (context.isAuthenticated() && (context.getUser().id !== args.user_id)) {
         throw new Error(`A different user is already in session.`);
       }
@@ -35,7 +35,7 @@ const resolvers = {
         throw new Error(`User must be logged in to tweet!`);
       }
       const existingTweet = db.getTweetById(args.id);
-      //authenticate user, ensure is user_id on tweet
+      //authorize user, ensure is user_id on tweet
       if (context.isAuthenticated() && (context.getUser().id !== existingTweet.user_id)) {
         throw new Error(`User cannot edit a different user's tweet.`);
       }
@@ -51,7 +51,7 @@ const resolvers = {
       if (context.isUnauthenticated()) {
         throw new Error(`User must be logged in to tweet!`);
       }
-      //authenticate user, ensure is user_id on tweet
+      //authorize user, ensure is user_id on tweet
       if (context.isAuthenticated() && (context.getUser().id !== db.getTweetById(args.id).user_id)) {
         throw new Error(`User cannot delete a different user's tweet.`);
       }
