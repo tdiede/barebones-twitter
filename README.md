@@ -1,6 +1,6 @@
 # Minimal Twitter GraphQL API
 
-This project is a barebones GraphQL API for users to post and read messages. The API is designed to handle user authentication 1) to validate email and phone numbers, and 2) to protect user accounts from other users trying to post/edit/delete messages linked to user. Data currently persists in-memory, with schema and connection to PostgreSQL database for future implementation. Interaction with this API can be done via graphiql. Enjoy!
+This project is a barebones GraphQL API for users to post and read messages. The API is designed to handle user authentication 1) to validate email and phone numbers and 2) to protect user accounts from other users trying to post/edit/delete messages linked to user. Data currently persists in-memory, with schema and connection to PostgreSQL database for future implementation. Interaction with this API can be done via graphiql. Enjoy!
 
 
 #### > Functional Requirements
