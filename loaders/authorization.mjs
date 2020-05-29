@@ -23,9 +23,9 @@ const configurePassport = (passport) => {
 };
 
 const validateUsername = (username) => {
-  const [phoneNumber, phoneCode] = phoneFormat(username);
-  if (phoneNumber !== undefined && phoneCode !== undefined) {
-    const phone = new PhoneValidator(phoneNumber, phoneCode);
+  const [phoneNumber, countryCode] = phoneFormat(username);
+  if (phoneNumber !== undefined && countryCode !== undefined) {
+    const phone = new PhoneValidator(phoneNumber, countryCode);
     return phone.isValid();
   }
   return email.validate(username);
