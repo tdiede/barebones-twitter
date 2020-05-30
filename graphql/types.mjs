@@ -7,6 +7,7 @@ const {
   GraphQLList,
   GraphQLString,
   GraphQLInt,
+  GraphQLNonNull,
   GraphQLID
 } = pkg;
 
@@ -28,10 +29,13 @@ const UserType = new GraphQLObjectType({
   description: "A user",
   fields: () => ({
     id: {
-      type: GraphQLInt!
+      type: GraphQLNonNull(GraphQLInt)
     },
     username: {
-      type: GraphQLString!
+      type: GraphQLNonNull(GraphQLString)
+    },
+    tweets: {
+      type: GraphQLNonNull(GraphQLList(TweetType))
     }
   })
 })
@@ -41,13 +45,13 @@ const TweetType = new GraphQLObjectType({
   description: "A tweet",
   fields: () => ({
     id: {
-      type: GraphQLInt!
+      type: GraphQLNonNull(GraphQLInt)
     },
-    user_id: {
-      type: GraphQLInt!
+    user: {
+      type: GraphQLNonNull(UserType)
     },
     text: {
-      type: GraphQLString!
+      type: GraphQLNonNull(GraphQLString)
     }
   })
 })
@@ -57,10 +61,10 @@ const AuthPayload = new GraphQLObjectType({
   description: 'Contains caller information',
   fields: () => ({
     session_id: {
-      type: GraphQLString!
+      type: GraphQLNonNull(GraphQLString)
     },
     user: {
-      type: UserType!
+      type: GraphQLNonNull(UserType)
     }
   })
 })

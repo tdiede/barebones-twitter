@@ -6,6 +6,7 @@ const {
   GraphQLList,
   GraphQLString,
   GraphQLInt,
+  GraphQLNonNull,
   GraphQLBoolean,
   GraphQLID
 } = pkg;
@@ -17,10 +18,10 @@ const mutations = () => ({
     description: 'Register to use the app',
     args: {
       username: {
-        type: GraphQLString
+        type: GraphQLNonNull(GraphQLString)
       },
       password: {
-        type: GraphQLString
+        type: GraphQLNonNull(GraphQLString)
       }
     },
     resolve: resolvers.Mutation.register
@@ -35,10 +36,10 @@ const mutations = () => ({
     description: 'Login to use the app',
     args: {
       username: {
-        type: GraphQLString
+        type: GraphQLNonNull(GraphQLString)
       },
       password: {
-        type: GraphQLString
+        type: GraphQLNonNull(GraphQLString)
       }
     },
     resolve: resolvers.Mutation.login
@@ -48,10 +49,10 @@ const mutations = () => ({
     description: 'Post a tweet',
     args: {
       text: {
-        type: GraphQLString
+        type: GraphQLNonNull(GraphQLString)
       },
       user_id: {
-        type: GraphQLInt
+        type: GraphQLNonNull(GraphQLInt)
       }
     },
     resolve: resolvers.Mutation.postTweet
@@ -61,10 +62,10 @@ const mutations = () => ({
     description: 'Update a tweet',
     args: {
       text: {
-        type: GraphQLString
+        type: GraphQLNonNull(GraphQLString)
       },
       id: {
-        type: GraphQLInt
+        type: GraphQLNonNull(GraphQLInt)
       }
     },
     resolve: resolvers.Mutation.editTweet
@@ -74,7 +75,7 @@ const mutations = () => ({
     description: 'Delete a tweet',
     args: {
       id: {
-        type: GraphQLInt
+        type: GraphQLNonNull(GraphQLInt)
       }
     },
     resolve: resolvers.Mutation.deleteTweet

@@ -48,11 +48,11 @@ const getTweetById = (id) => {
 }
 
 const getTweetsByUserId = (userId) => {
-  return TWEETS.filter(tweet => tweet.user_id === userId);
+  return TWEETS.filter(tweet => tweet.user.id === userId);
 }
 
 const getTweetsByUsername = (username) => {
-  return TWEETS.filter(tweet => tweet.user_id === getUserByUsername(username).id);
+  return TWEETS.filter(tweet => tweet.user.username === username);
 }
 
 

@@ -6,6 +6,7 @@ const {
   GraphQLList,
   GraphQLString,
   GraphQLInt,
+  GraphQLNonNull,
   GraphQLID
 } = pkg;
 
@@ -29,7 +30,7 @@ const queries = () => ({
     description: 'A single tweet',
     args: {
       id: {
-        type: GraphQLInt
+        type: GraphQLNonNull(GraphQLInt)
       }
     },
     resolve: resolvers.Query.tweet
@@ -41,7 +42,7 @@ const queries = () => ({
   },
   tweets: {
     type: new GraphQLList(types.TweetType),
-    description: 'List of all tweets',
+    description: 'List of all tweets, optional by user',
     args: {
       username: {
         type: GraphQLString
