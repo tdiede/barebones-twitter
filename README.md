@@ -51,10 +51,11 @@ query {
   users {
     id
     username
+    tweets
   },
   tweets {
     id
-    user_id
+    user { username }
     text
   }
 }
@@ -73,7 +74,7 @@ mutation {
 }
 ```
 
-*NOTE: Because a user must be logged in to post a message associated with their account, and existing in-memory users do not have passwords saved (would be hashed), please first register, then log in, and note what your user_id is in order to post a tweet.*
+*NOTE: Because a user must be logged in to post a message associated with their account, and existing in-memory users do not have passwords saved (would be hashed), please first register, then log in, and note what your user.id is in order to post a tweet.*
 
 <br>
 
