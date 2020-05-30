@@ -7,7 +7,6 @@ const {
   GraphQLString,
   GraphQLInt,
   GraphQLBoolean,
-  GraphQLNonNull,
   GraphQLID
 } = pkg;
 

@@ -6,7 +6,6 @@ const {
   GraphQLList,
   GraphQLString,
   GraphQLInt,
-  GraphQLNonNull,
   GraphQLID
 } = pkg;
 
