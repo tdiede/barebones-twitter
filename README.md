@@ -106,12 +106,11 @@ Mutation endpoints are provided as:
 ### > GraphQL Schema
 Here is the list of supported query and mutation fields as API endpoints:
 <br>
+<br>
 <img src="./demo/graphql_query_fields.png" width="300" align="top">
 <br>
 <br>
-<br>
 <img src="./demo/graphql_mutation_fields.png" width="300" align="top">
-<br>
 <br>
 <br>
 
