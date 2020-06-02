@@ -41,8 +41,8 @@ const expressLoader = async ({
     passport.authenticate('local', {
       session: false
     }),
-    (req, res, next) => {
-      const token = req.authInfo.token
+    (req, res) => {
+      const token = req.authInfo.token;
       // res.cookie('token', token) // save to client
       res.json({
         message: (token ? `ok` : `error`),
