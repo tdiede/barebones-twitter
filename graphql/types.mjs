@@ -56,6 +56,7 @@ const TweetType = new GraphQLObjectType({
   })
 })
 
+// TODO: remove code if not used
 const AuthPayload = new GraphQLObjectType({
   name: 'Auth',
   description: 'Contains caller information',

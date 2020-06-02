@@ -7,7 +7,7 @@ This project is a barebones GraphQL API for users to post and read messages. The
 + Creates a new user with password-protected login, and email or phone number as username
 + Validates username as email or phone number format (TODO: authenticate)
 + Encrypts backend storage of user passwords
-+ Keeps users in session for a set period of time (max cookie age)
++ Use JWT json web token to protect graphql routes, authenticate user
 + Allows existing users to log in with the same credentials provided upon registration
 + Posts messages linked to a user (must be authorized)
 + Allows users to edit their own messages
@@ -34,7 +34,9 @@ First clone this repo. Then create an .env file with the following:
 ```
 PORT=5000
 NODE_ENV=development or production
-SESSION_SECRET=secret
+JWT_SECRET=secret
+JWT_AUDIENCE=user
+JWT_ISSUER=dev
 ```
 
 Run these commands to start the backend server:
@@ -42,9 +44,21 @@ Run these commands to start the backend server:
 `npm install`
 `npm run start`
 
-Visit [http://localhost:5000/graphql](http://localhost:5000/graphql).
+Use curl commands, first to register and receive a JWT token from the server.
+
+```curl -i -X POST -H 'Content-Type: application/json' -d '{"username": "carex@bear.com", "password": "passwr"}' localhost:5000/register
+```
+
+Save the token into environment variable `TOKEN`. Then send queries and mutations to the `/graphql` endpoint like so:
+
+```curl -i -H "Authorization: Bearer ${TOKEN}" -X POST -H 'Accept: application/json' -H 'Content-Type: application/json' -d '{"query":"query { users {id username}}"}' 'localhost:5000/graphql'
+
+```curl -i -H "Authorization: Bearer ${TOKEN}" -X POST -H 'Accept: application/json' -H 'Content-Type: application/json' -d '{"query":"mutation { postTweet (user_id: 6, text:\"eheyy wurld\") {id text user_id} }"}' 'localhost:5000/graphql'
+
+
+~~Visit [http://localhost:5000/graphql](http://localhost:5000/graphql).
 This is the graphiql interface where you can run queries and mutations.
-For example, try the following:
+For example, try the following:~~
 
 ```graphql
 query {
@@ -84,10 +98,12 @@ This project is relatively straightforward in its design and simple in its imple
 The primary backend components are: 1) Passport Authentication, 2) GraphQL Schema, and 3) PostgreSQL Schema.
 
 ### > Authentication
-Using the Passport.js package, along with a local strategy built to integrate with GraphQL as opposed to REST APIs, all requests to authenticate are passed to the callback function `authenticateUser`, which does two things: checks if user is stored in database, and verifies the password matches the hashed password stored in database. When a user registers or logs in, a session is created and saved. All mutation requests use the `context` to check the existing session and/or authenticate the caller to ensure proper permissions before executing the requested operation.
+Authentication is built to protect the GraphQL endpoints `/graphql` with JWT. This application uses the Passport.js package for JWT along with a local strategy to register new users at the `/register` endpoint and send a token back to the client. The callback function `registerUser` handles generating the token (sign and verify) and performs other user registration operations like hashing password and inserting into database (for login, checks if user is stored in database, and verifies the password matches the hashed password stored in database).
+
+Thereafter, all requests to authenticate are passed to the callback function `authenticateUser`, which verifies the JWT. No cookies are saved at this time. All mutation requests use the `context` to check the token and/or authenticate the caller to ensure proper permissions before executing the requested operation.
 
 ### > API
-The GraphQL API consists of a schema, types, queries, mutations, and resolvers. We have non-root-level types for UserType, TweetType, and AuthPayload.
+The GraphQL API consists of a schema, types, queries, mutations, and resolvers. We have non-root-level types for UserType, TweetType~~, and AuthPayload~~.
 
 Query endpoints are provided as:
 + Get user: user_id or username => info about user (UserType)
@@ -96,15 +112,15 @@ Query endpoints are provided as:
 + Get tweets: username or user_id (optional args) => list of tweets (List of TweetType)
 
 Mutation endpoints are provided as:
-+ Register: username, password => info about user (UserType), AuthPayload
-+ Login: username, password => info about user (UserType), AuthPayload
-+ Logout: (no args) => boolean to show operation successful
 + Post tweet: text, user_id => info about tweet (TweetType)
 + Update tweet: text, tweet_id => info about tweet (TweetType)
 + Delete tweet: tweet_id => boolean to show operation successful
++ Logout: (no args) => boolean to show operation successful
+
+Both Register and Login endpoints are handled as POST methods, with inputs of username, password => output of JWT token.
 
 ### > GraphQL Schema
-Here is the list of supported query and mutation fields as API endpoints:
+Here is the list of supported query and mutation fields as API endpoints: (NOTE: Register and Login no longer handled by GraphQL.)
 <br>
 <br>
 <img src="./demo/graphql_query_fields.png" width="300" align="top">

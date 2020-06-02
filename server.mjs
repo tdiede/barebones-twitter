@@ -2,10 +2,6 @@ import express from 'express';
 import loaders from './loaders';
 
 
-// process.env
-const PORT = 5000;
-
-
 async function startServer() {
   const app = express();
 
@@ -13,7 +9,7 @@ async function startServer() {
     app: app
   }).catch((e) => console.log(e));
 
-  app.listen(PORT, err => {
+  app.listen(process.env.PORT, err => {
     console.log(`Your server is ready !`);
   });
 }
