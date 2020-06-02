@@ -7,7 +7,7 @@ This project is a barebones GraphQL API for users to post and read messages. The
 + Creates a new user with password-protected login, and email or phone number as username
 + Validates username as email or phone number format (TODO: authenticate)
 + Encrypts backend storage of user passwords
-+ Use JWT json web token to protect graphql routes, authenticate user
++ Use JWT json web token to protect GraphQL routes, authenticate user
 + Allows existing users to log in with the same credentials provided upon registration
 + Posts messages linked to a user (must be authorized)
 + Allows users to edit their own messages
@@ -46,21 +46,17 @@ Run these commands to start the backend server:
 
 Use curl commands, first to register and receive a JWT token from the server.
 
-```curl -i -X POST -H 'Content-Type: application/json' -d '{"username": "carex@bear.com", "password": "passwr"}' localhost:5000/register
-```
+`curl -i -X POST -H 'Content-Type: application/json' -d '{"username": "carex@bear.com", "password": "passwr"}' localhost:5000/register`
 
 Save the token into environment variable `TOKEN`. Then send queries and mutations to the `/graphql` endpoint like so:
 
-```curl -i -H "Authorization: Bearer ${TOKEN}" -X POST -H 'Accept: application/json' -H 'Content-Type: application/json' -d '{"query":"query { users {id username}}"}' 'localhost:5000/graphql'
+`curl -i -H "Authorization: Bearer ${TOKEN}" -X POST -H 'Accept: application/json' -H 'Content-Type: application/json' -d '{"query":"query { users {id username}}"}' 'localhost:5000/graphql'`
 
-```curl -i -H "Authorization: Bearer ${TOKEN}" -X POST -H 'Accept: application/json' -H 'Content-Type: application/json' -d '{"query":"mutation { postTweet (user_id: 6, text:\"eheyy wurld\") {id text user_id} }"}' 'localhost:5000/graphql'
+`curl -i -H "Authorization: Bearer ${TOKEN}" -X POST -H 'Accept: application/json' -H 'Content-Type: application/json' -d '{"query":"mutation { postTweet (user_id: 6, text:\"eheyy wurld\") {id text user_id} }"}' 'localhost:5000/graphql'`
 
+For example, try the following in the querystring data:
 
-~~Visit [http://localhost:5000/graphql](http://localhost:5000/graphql).
-This is the graphiql interface where you can run queries and mutations.
-For example, try the following:~~
-
-```graphql
+```
 query {
   users {
     id
@@ -117,7 +113,9 @@ Mutation endpoints are provided as:
 + Delete tweet: tweet_id => boolean to show operation successful
 + Logout: (no args) => boolean to show operation successful
 
-Both Register and Login endpoints are handled as POST methods, with inputs of username, password => output of JWT token.
+Both Register and Login take the same inputs, return the same output, and are handled with same endpoint `/register` & POST method:
++ Register: username, password => JWT token
++ Login: username, password => JWT token
 
 ### > GraphQL Schema
 Here is the list of supported query and mutation fields as API endpoints: (NOTE: Register and Login no longer handled by GraphQL.)
